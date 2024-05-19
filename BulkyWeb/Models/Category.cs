@@ -7,7 +7,9 @@ namespace BulkyWeb.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public int Name { get; set; }
+        [MaxLength(100,ErrorMessage = "字數上限為100")]
+        public string Name { get; set; }
+        [Range(1, 100,ErrorMessage ="請輸入1-100之間的數字")]
         public int DisplayOrder { get; set; }
 
     }
