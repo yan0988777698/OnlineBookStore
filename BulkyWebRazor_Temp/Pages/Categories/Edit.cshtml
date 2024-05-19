@@ -1,7 +1,8 @@
-﻿@model Category
+﻿@page
+@model BulkyWebRazor_Temp.Pages.Categories.EditModel
 @{
 }
-<form method="post" asp-controller="Category" asp-action="Edit">
+<form method="post" asp-page="/Categories/Edit">
     <div class="border p-3 mt-4">
         <div class="row pb-2">
             <h2 class="text-primary">
@@ -10,16 +11,16 @@
             <hr />
             @* <div asp-validation-summary="All"></div> *@
         </div>
-        <input asp-for="Id" hidden />
+        <input asp-for="category.Id" hidden />
         <div class="mb-3 ">
-            <label asp-for="Name">Category Name</label>
-            <input asp-for="Name" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label asp-for="category.Name">Category Name</label>
+            <input asp-for="category.Name" class="form-control" />
+            <span asp-validation-for="category.Name" class="text-danger"></span>
         </div>
         <div class="mb-3 ">
-            <label asp-for="DisplayOrder">Display Order</label>
-            <input asp-for="DisplayOrder" class="form-control" />
-            <span asp-validation-for="DisplayOrder" class="text-danger"></span>
+            <label asp-for="category.DisplayOrder">Display Order</label>
+            <input asp-for="category.DisplayOrder" class="form-control" />
+            <span asp-validation-for="category.DisplayOrder" class="text-danger"></span>
 
         </div>
         <div class="row">
@@ -27,7 +28,7 @@
                 <button type="submit" class="btn btn-primary form-control">Update</button>
             </div>
             <div class="col-6 col-md-3">
-                <a asp-controller="Category" asp-action="List" class="btn btn-outline-secondary border form-control">
+                <a asp-page="/Categories/List" class="btn btn-outline-secondary border form-control">
                     Back to List
                 </a>
             </div>
