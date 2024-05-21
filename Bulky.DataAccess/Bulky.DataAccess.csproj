@@ -20,8 +20,4 @@
     <ProjectReference Include="..\Bulky.Utility\Bulky.Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repo\" />
-  </ItemGroup>
-
 </Project>
