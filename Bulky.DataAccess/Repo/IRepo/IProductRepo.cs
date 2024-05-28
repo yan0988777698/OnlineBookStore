@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Bulky.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Bulky.DataAccess.Repo.IRepo
 {
-    public interface IUnitOfWork
+    public interface IProductRepo : IGenericRepo<Product>
     {
-        ICategoryRepo Category { get; }
-        IProductRepo Product { get; }
-        void Save();
+        void Update(Product product);
     }
 }

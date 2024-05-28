@@ -11,11 +11,15 @@ namespace Bulky.DataAccess.Repo
     public class UnitOfWork : IUnitOfWork
     {
         public ICategoryRepo Category { get; private set; }
+
+        public IProductRepo Product { get; private set; }
+
         private readonly AppDbContext _db;
         public UnitOfWork(AppDbContext db)
         {
             _db = db;
             Category = new CategoryRepo(_db);
+            Product = new ProductRepo(_db);
         }
         public void Save()
         {
