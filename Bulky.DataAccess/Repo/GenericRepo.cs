@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace Bulky.DataAccess.Repo
 {
-    internal class GenericRepo<T> : IGenericRepo<T> where T : class
+    public class GenericRepo<T> : IGenericRepo<T> where T : class
     {
         private readonly AppDbContext _db;
-        internal DbSet<T> _dbset;
+        public DbSet<T> _dbset;
         public GenericRepo(AppDbContext appDbContext)
         {
             _db = appDbContext;

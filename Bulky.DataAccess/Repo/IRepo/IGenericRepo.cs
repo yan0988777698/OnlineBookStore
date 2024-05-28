@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bulky.DataAccess.Repo.IRepo
 {
-    internal interface IGenericRepo<T> where T : class
+    public interface IGenericRepo<T> where T : class
     {
         IEnumerable<T> GetAll();
         T GetFirstOrDefault(Expression<Func<T,bool>> filter);
