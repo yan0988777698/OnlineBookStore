@@ -21,5 +21,40 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Create(Product product)
+        {
+            _unitOfWork.Product.Add(product);
+            _unitOfWork.Save();
+            TempData["success"] = "Product created seccessfully";
+            return RedirectToAction("List");
+        }
+        public IActionResult Edit(int id)
+        {
+            Product product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+            return View(product);
+        }
+        [HttpPost]
+        public IActionResult Edit(Product product)
+        {
+            _unitOfWork.Product.Update(product);
+            _unitOfWork.Save();
+            TempData["success"] = "Product updated seccessfully";
+            return RedirectToAction("List");
+        }
+        public IActionResult Delete(int id)
+        {
+            Product product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+            return View(product);
+        }
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeletePost(int id)
+        {
+            Product? product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+            _unitOfWork.Product.Remove(product);
+            _unitOfWork.Save();
+            TempData["success"] = "Product deleted seccessfully";
+            return RedirectToAction("List");
+        }
     }
 }
