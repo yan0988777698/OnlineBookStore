@@ -11,34 +11,40 @@ namespace Bulky.Models
     public class Product
     {
         [Key]
+        [Display(Name = "編號")]
         public int Id { get; set; }
         [Required]
+        [Display(Name = "書名")]
         public string? Title { get; set; }
         [Required]
+        [Display(Name = "介紹")]
         public string? Description { get; set; }
         [Required]
         public string? ISBN { get; set; }
         [Required]
+        [Display(Name = "作者")]
         public string? Author { get; set; }
         [Required]
-        [Display(Name ="List Price")]
-        [Range(1,1000)]
+        [Display(Name = "建議售價")]
+        [Range(1, 1000)]
         public double? ListPrice { get; set; }
         [Required]
-        [Display(Name = "Price for 1-50")]
+        [Display(Name = "售價(購買數量1-50)")]
         [Range(1, 1000)]
         public double? Price { get; set; }
         [Required]
-        [Display(Name = "Price for 50+")]
+        [Display(Name = "售價(購買數量50-100)")]
         [Range(1, 1000)]
         public double? Price50 { get; set; }
         [Required]
-        [Display(Name = "Price for 100+")]
+        [Display(Name = "售價(購買數量100以上)")]
         [Range(1, 1000)]
         public double? Price100 { get; set; }
+        [Display(Name = "分類")]
+
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public Category Category{ get; set; }
-        public string ImageUrl { get; set; }
+        public Category Category { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

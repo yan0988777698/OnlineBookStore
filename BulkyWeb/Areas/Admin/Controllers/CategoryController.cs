@@ -35,7 +35,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             {
                 _unitOfWork.Category.Add(category);
                 _unitOfWork.Save();
-                TempData["success"] = "Category created seccessfully";
+                TempData["success"] = "類別新增成功";
                 return RedirectToAction("List", "Category");
             }
             return View();
@@ -59,7 +59,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             {
                 _unitOfWork.Category.Update(category);
                 _unitOfWork.Save();
-                TempData["success"] = "Category updated seccessfully";
+                TempData["success"] = "類別更新成功";
                 return RedirectToAction("List", "Category");
             }
             return View();
@@ -84,7 +84,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 return NotFound();
             _unitOfWork.Category.Remove(category);
             _unitOfWork.Save();
-            TempData["success"] = "Category deleted seccessfully";
+            TempData["success"] = "類別刪除成功";
             return RedirectToAction("List", "Category");
         }
     }

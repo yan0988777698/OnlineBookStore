@@ -1,6 +1,7 @@
 ﻿using Bulky.DataAccess.Repo.IRepo;
 using Bulky.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
@@ -19,6 +20,9 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(x =>
+            new SelectListItem { Text = x.Name, Value = x.Id.ToString() }); 
+            ViewBag.CategoryList = CategoryList;
             return View();
         }
         [HttpPost]
@@ -26,7 +30,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             _unitOfWork.Product.Add(product);
             _unitOfWork.Save();
-            TempData["success"] = "Product created seccessfully";
+            TempData["success"] = "商品新增成功";
             return RedirectToAction("List");
         }
         public IActionResult Edit(int id)
@@ -39,7 +43,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             _unitOfWork.Product.Update(product);
             _unitOfWork.Save();
-            TempData["success"] = "Product updated seccessfully";
+            TempData["success"] = "商品更新成功";
             return RedirectToAction("List");
         }
         public IActionResult Delete(int id)
@@ -53,7 +57,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             Product? product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
             _unitOfWork.Product.Remove(product);
             _unitOfWork.Save();
-            TempData["success"] = "Product deleted seccessfully";
+            TempData["success"] = "商品刪除成功";
             return RedirectToAction("List");
         }
     }
