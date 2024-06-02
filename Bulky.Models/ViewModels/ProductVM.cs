@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Bulky.Models.ViewModels
 {
-    internal class ProductVM
+    public class ProductVM
     {
         public Product Product { get; set; }
         public IEnumerable<SelectListItem> CategoryList { get; set; }
