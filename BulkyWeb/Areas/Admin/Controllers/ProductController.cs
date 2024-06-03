@@ -3,6 +3,7 @@ using Bulky.Models;
 using Bulky.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Diagnostics;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
@@ -10,9 +11,11 @@ namespace BulkyWeb.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _env;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment env)
         {
             _unitOfWork = unitOfWork;
+            _env = env;
         }
         public IActionResult List()
         {
@@ -41,6 +44,18 @@ namespace BulkyWeb.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
+            string wwwRootPath = _env.WebRootPath;
+            if (file !=  null)
+            {
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                string productPath = Path.Combine(wwwRootPath,@"Images\Product", fileName);
+                //TODO:照片更新
+                using (FileStream fs = new FileStream(productPath,FileMode.Create))
+                {
+                    file.CopyTo(fs);
+                }
+                productVM.Product.ImageUrl = @"\Images\Product\" + fileName;
+            }
             _unitOfWork.Product.Add(productVM.Product);
             _unitOfWork.Save();
             TempData["success"] = "商品新增成功";
