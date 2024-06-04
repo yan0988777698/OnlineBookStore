@@ -19,19 +19,20 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult List()
         {
-            List<Product> products = _unitOfWork.Product.GetAll().ToList();
+            List<Product> products = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
             return View(products);
         }
         public IActionResult Upsert(int? id)
         {
             IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(x =>
-            new SelectListItem { Text = x.Name, Value = x.Id.ToString() }); 
+            new SelectListItem { Text = x.Name, Value = x.Id.ToString() });
 
-            ProductVM productVM = new (){
+            ProductVM productVM = new()
+            {
                 Product = new Product(),
                 CategoryList = CategoryList
             };
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return View(productVM);
             }
@@ -45,23 +46,40 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
             string wwwRootPath = _env.WebRootPath;
-            if (file !=  null)
+            if (file != null)
             {
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string productPath = Path.Combine(wwwRootPath,@"Images\Product", fileName);
+                string productPath = Path.Combine(wwwRootPath, @"Images\Product", fileName);
                 //TODO:照片更新
-                using (FileStream fs = new FileStream(productPath,FileMode.Create))
+                if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+                {
+                    //刪除舊照片
+                    string oldFilePath = Path.Combine(_env.WebRootPath, productVM.Product.ImageUrl.Trim('\\'));
+                    if (System.IO.File.Exists(oldFilePath))
+                    {
+                        System.IO.File.Delete(oldFilePath);
+                    }
+                }
+                using (FileStream fs = new FileStream(productPath, FileMode.Create))
                 {
                     file.CopyTo(fs);
                 }
                 productVM.Product.ImageUrl = @"\Images\Product\" + fileName;
             }
-            _unitOfWork.Product.Add(productVM.Product);
+            if(productVM.Product.Id == 0)
+            {
+                _unitOfWork.Product.Add(productVM.Product);
+            }
+            else
+            {
+                _unitOfWork.Product.Update(productVM.Product);
+            }
+
             _unitOfWork.Save();
             TempData["success"] = "商品新增成功";
             return RedirectToAction("List");
         }
- 
+
         public IActionResult Delete(int id)
         {
             Product product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);

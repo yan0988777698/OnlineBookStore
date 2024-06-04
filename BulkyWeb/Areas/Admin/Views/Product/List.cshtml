@@ -3,24 +3,24 @@
     ViewData["Title"] = "List";
 }
 
-<h1>List</h1>
 <div class="container">
     <div class="row pt-4 pb-3">
         <div class="col-6">
-            <h2 class="text-primary">Product List</h2>
+            <h2 class="text-primary">商品列表</h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary"><i class="bi bi-plus-square"></i>Create New Product</a>
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary"><i class="bi bi-plus-square"></i>新增商品</a>
         </div>
     </div>
     <table class="table table-bordered table-striped">
         <tr>
-            <th>Title</th>
+            <th>標題</th>
             <th>ISBN</th>
-            <th>Author</th>
-            <th>Description</th>
-            <th>Price</th>
-            <th>Edit and Delete</th>
+            <th>作者</th>
+            <th>商品描述</th>
+            <th>價格</th>
+            <th>類別</th>
+            <th>操作</th>
         </tr>
         @foreach (Product item in Model.OrderBy(x => x.ISBN))
         {
@@ -30,13 +30,14 @@
                 <td>@item.Author</td>
                 <td>@item.Description</td>
                 <td>@item.ListPrice</td>
+                <td>@item.Category.Name</td>
                 <td>
                     <div class="w-75 btn-group" role="group">
                         <a asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id" class="btn btn-primary mx-2">
-                            <i class="bi bi-pencil-square"></i>Edit
+                            <i class="bi bi-pencil-square"></i>編輯
                         </a>
                         <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger mx-2">
-                            <i class="bi bi-trash3"></i>Delete
+                            <i class="bi bi-trash3"></i>刪除
                         </a>
                     </div>
                 </td>

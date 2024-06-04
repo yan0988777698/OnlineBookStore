@@ -45,6 +45,7 @@ namespace Bulky.Models
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+        [Display(Name = "圖片上傳")]
         public string? ImageUrl { get; set; }
     }
 }
