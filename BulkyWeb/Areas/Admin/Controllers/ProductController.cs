@@ -94,5 +94,14 @@ namespace BulkyWeb.Areas.Admin.Controllers
             TempData["success"] = "商品刪除成功";
             return RedirectToAction("List");
         }
+        #region API
+        [HttpGet]
+        public IActionResult GetAll() {
+            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return Json(products);
+        }
+
+        #endregion
+
     }
 }
