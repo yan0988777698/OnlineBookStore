@@ -84,11 +84,11 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             [Required(ErrorMessage = "暱稱 為必填")]
             public string Name {  get; set; }
             [Required(ErrorMessage = "縣市 為必填")]
-            public string City { get; set; }
+            public string? City { get; set; }
             [Required(ErrorMessage = "鄉鎮區 為必填")]
-            public string Region { get; set; }
+            public string? Region { get; set; }
             [Required(ErrorMessage = "詳細地址 為必填")]
-            public string StreetAddress { get; set; }
+            public string? StreetAddress { get; set; }
             [Required(ErrorMessage = "電話 為必填")]
             public string PhoneNumber { get; set; }
         }
@@ -122,6 +122,10 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.City = Input.City;
+                user.Region = Input.Region;
+                user.StreetAddress = Input.StreetAddress;
+                user.Name = Input.Name;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

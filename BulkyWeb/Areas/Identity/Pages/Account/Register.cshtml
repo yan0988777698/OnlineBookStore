@@ -40,6 +40,11 @@
                         <span asp-validation-for="Input.Name" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.PhoneNumber" class="form-control" aria-required="true" placeholder="streetAddress" />
+                        <label asp-for="Input.PhoneNumber" class="text-muted">手機號碼</label>
+                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
                         <input asp-for="Input.City" class="form-control" aria-required="true" placeholder="city" />
                         <label asp-for="Input.City" class="text-muted">縣市</label>
                         <span asp-validation-for="Input.City" class="text-danger"></span>
