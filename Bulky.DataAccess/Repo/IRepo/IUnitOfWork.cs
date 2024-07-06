@@ -10,6 +10,7 @@ namespace Bulky.DataAccess.Repo.IRepo
     {
         ICategoryRepo Category { get; }
         IProductRepo Product { get; }
+        ICompanyRepo Company { get; }
         void Save();
     }
 }

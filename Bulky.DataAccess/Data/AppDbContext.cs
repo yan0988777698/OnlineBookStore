@@ -14,6 +14,7 @@ namespace Bulky.DataAccess.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,7 +36,7 @@ namespace Bulky.DataAccess.Data
                     Price = 90,
                     Price50 = 85,
                     Price100 = 80,
-                    CategoryId= 1,
+                    CategoryId = 1,
                     ImageUrl = ""
                 },
                 new Product
@@ -50,7 +51,7 @@ namespace Bulky.DataAccess.Data
                     Price50 = 25,
                     Price100 = 20,
                     CategoryId = 1,
-                    ImageUrl=""
+                    ImageUrl = ""
                 },
                 new Product
                 {
@@ -109,6 +110,35 @@ namespace Bulky.DataAccess.Data
                     ImageUrl = ""
                 }
             );
+
+            modelBuilder.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    Name = "MSIT-BookStore",
+                    City = "Taipei City",
+                    Region = "Da'an Dist",
+                    StreetAddress = "Sec. 1, Fuxing S. Rd.",
+                    PhoneNumber = "02-1234-5678"
+                }, new Company
+                {
+                    Id = 2,
+                    Name = "BlogComing",
+                    City = "Taipei City",
+                    Region = "Zhongzheng Dist",
+                    StreetAddress = "Sec. 1, Chongqing S. Rd.",
+                    PhoneNumber = "03-4455-5566"
+                }, new Company
+                {
+                    Id = 3,
+                    Name = "SteppingStone",
+                    City = "New Taipei City",
+                    Region = "Xizhi Dist.",
+                    StreetAddress = "Sec. 1, Xintai 5th Rd.",
+                    PhoneNumber = "02-2211-0033"
+                }
+
+                );
         }
     }
 }

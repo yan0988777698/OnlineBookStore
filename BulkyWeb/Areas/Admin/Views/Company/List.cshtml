@@ -1,0 +1,31 @@
+﻿@model List<Company>
+@section Styles {
+    <style></style>
+}
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">公司清單</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Company" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-square"></i>新增公司</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-striped" id="tblData">
+        <thead>
+            <tr>
+                <th>公司名稱</th>
+                <th>電話</th>
+                <th>縣市</th>
+                <th>鄉鎮區</th>
+                <th>詳細地址</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        
+    </table>
+</div>
+
+@section Scripts{
+    <script src="~/js/company.js"></script>
+}

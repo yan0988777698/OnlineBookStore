@@ -4,6 +4,7 @@ using Bulky.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bulky.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240706115018_AddNewCompanyMSIT-158InCompaniesTable")]
+    partial class AddNewCompanyMSIT158InCompaniesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,28 +104,10 @@ namespace Bulky.DataAccess.Migrations
                         {
                             Id = 1,
                             City = "Taipei City",
-                            Name = "MSIT-BookStore",
+                            Name = "MSIT-158",
                             PhoneNumber = "02-1234-5678",
                             Region = "Da'an Dist",
                             StreetAddress = "Sec. 1, Fuxing S. Rd."
-                        },
-                        new
-                        {
-                            Id = 2,
-                            City = "Taipei City",
-                            Name = "BlogComing",
-                            PhoneNumber = "03-4455-5566",
-                            Region = "Zhongzheng Dist",
-                            StreetAddress = "Sec. 1, Chongqing S. Rd."
-                        },
-                        new
-                        {
-                            Id = 3,
-                            City = "New Taipei City",
-                            Name = "SteppingStone",
-                            PhoneNumber = "02-2211-0033",
-                            Region = "Xizhi Dist.",
-                            StreetAddress = "Sec. 1, Xintai 5th Rd."
                         });
                 });
 

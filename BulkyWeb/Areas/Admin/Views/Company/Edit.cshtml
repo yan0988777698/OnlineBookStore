@@ -1,0 +1,58 @@
+﻿@model Company
+@{
+}
+<form method="post" asp-controller="Company" asp-action="Edit">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">
+                編輯公司
+            </h2>
+            <hr />
+            @* <div asp-validation-summary="All"></div> *@
+        </div>
+        <input asp-for="Id" hidden />
+        <div class="mb-3 ">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3 ">
+            <label asp-for="City"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+        <div class="mb-3 ">
+            <label asp-for="Region"></label>
+            <input asp-for="Region" class="form-control" />
+            <span asp-validation-for="Region" class="text-danger"></span>
+        </div>
+        <div class="mb-3 ">
+            <label asp-for="StreetAddress"></label>
+            <input asp-for="StreetAddress" class="form-control" />
+            <span asp-validation-for="StreetAddress" class="text-danger"></span>
+        </div>
+        <div class="mb-3 ">
+            <label asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control" />
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-6 col-md-3">
+                <button type="submit" class="btn btn-primary form-control">更新</button>
+            </div>
+            <div class="col-6 col-md-3">
+                <a asp-controller="Company" asp-action="List" class="btn btn-outline-secondary border form-control">
+                    返回列表
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+
+</form>
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+}
