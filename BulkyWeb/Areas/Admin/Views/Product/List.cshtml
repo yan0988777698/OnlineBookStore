@@ -12,42 +12,19 @@
             <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary"><i class="bi bi-plus-square"></i>新增商品</a>
         </div>
     </div>
-    <table class="table table-bordered table-striped">
-        <tr>
-            <th>標題</th>
-            <th>ISBN</th>
-            <th>作者</th>
-            <th>商品描述</th>
-            <th>價格</th>
-            <th>類別</th>
-            <th>操作</th>
-        </tr>
-        @foreach (Product item in Model.OrderBy(x => x.ISBN))
-        {
+    <table class="table table-bordered table-striped" id="tblData">
+        <thead>
             <tr>
-                <td>@item.Title</td>
-                <td>@item.ISBN</td>
-                <td>@item.Author</td>
-                <td>@item.Description</td>
-                <td>@item.ListPrice</td>
-                <td>@item.Category.Name</td>
-                <td>
-                    <div class="w-75 btn-group" role="group">
-                        <a asp-controller="Product" asp-action="Upsert" asp-route-id="@item.Id" class="btn btn-primary mx-2">
-                            <i class="bi bi-pencil-square"></i>編輯
-                        </a>
-                        <a asp-controller="Product" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger mx-2">
-                            <i class="bi bi-trash3"></i>刪除
-                        </a>
-                    </div>
-                </td>
+                <th>標題</th>
+                <th>ISBN</th>
+                <th>價格</th>
+                <th>作者</th>
+                <th>分類</th>
+                <th>操作</th>
             </tr>
-        }
-
+        </thead>
     </table>
 </div>
-
-<script>
-
-
-</script>
+@section Scripts {
+    <script src="~/js/product.js"></script>
+}

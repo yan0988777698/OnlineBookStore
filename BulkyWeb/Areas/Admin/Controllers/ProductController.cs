@@ -23,7 +23,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult List()
         {
-            List<Product> products = _unitOfWork.Product.GetAll(includeProperties:"Category").ToList();
+            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
             return View(products);
         }
         public IActionResult Upsert(int? id)
@@ -70,7 +70,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 }
                 productVM.Product.ImageUrl = @"\Images\Product\" + fileName;
             }
-            if(productVM.Product.Id == 0)
+            if (productVM.Product.Id == 0)
             {
                 _unitOfWork.Product.Add(productVM.Product);
             }
@@ -100,11 +100,33 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         #region API
         [HttpGet]
-        public IActionResult GetAll() {
+        public IActionResult GetAll()
+        {
             List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
-            return Json(products);
+            return Json(new { data = products });
         }
-
+        [HttpDelete]
+        public IActionResult DeleteById(int? id)
+        {
+            var productToBeDeleted = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+            if (productToBeDeleted == null)
+            {
+                return Json(new { success = false, message = "Product is not found." });
+            }
+            if (!string.IsNullOrEmpty(productToBeDeleted.ImageUrl))
+            {
+                //刪除舊照片
+                string oldFilePath = Path.Combine(_env.WebRootPath, productToBeDeleted.ImageUrl.Trim('\\'));
+                if (System.IO.File.Exists(oldFilePath))
+                {
+                    System.IO.File.Delete(oldFilePath);
+                }
+            }
+            
+            _unitOfWork.Product.Remove(productToBeDeleted);
+            _unitOfWork.Save();
+            return Json(new { success = true, message = "Delete Successful" });
+        }
         #endregion
 
     }

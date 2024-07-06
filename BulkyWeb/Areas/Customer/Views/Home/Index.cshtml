@@ -1,8 +1,32 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model IEnumerable<Product>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row pb-3">
+    @foreach (var product in Model)
+    {
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded">
+                        <img src="@product.ImageUrl" class="card-img-top rounded" />
+                        <div class="card-body">
+                            <div>
+                                <p class="card-title text-uppercase text-center">@product.Title</p>
+                                <p class="card-title text-center text-info-emphasis">by <b>@product.Author</b></p>
+                            </div>
+                            <div>
+                                <p class="card-title text-uppercase text-center text-decoration-line-through mb-0">建議售價 : @(product.ListPrice.HasValue ? product.ListPrice.Value.ToString("C") : "N/A")</p>
+                            </div>
+                            <div>
+                                <p class="card-title text-uppercase text-center">優惠價格 : @(product.Price100.HasValue ? product.Price100.Value.ToString("C") : "N/A")</p>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="Customer/Home/Details/@product.Id" class="btn btn-primary bg-gradient border-0 form-control">查看商品資訊</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
 </div>
