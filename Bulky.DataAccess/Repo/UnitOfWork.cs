@@ -16,6 +16,8 @@ namespace Bulky.DataAccess.Repo
         public ICompanyRepo Company { get; private set; }
         public IShoppingCartRepo ShoppingCart { get; set; }
 
+        public IApplicationUserRepo ApplicationUser { get; set; }
+
         private readonly AppDbContext _db;
         public UnitOfWork(AppDbContext db)
         {
@@ -24,6 +26,7 @@ namespace Bulky.DataAccess.Repo
             Product = new ProductRepo(_db);
             Company = new CompanyRepo(_db);
             ShoppingCart = new ShoppingCartRepo(_db);
+            ApplicationUser = new ApplicationUserRepo(_db);
         }
         public void Save()
         {
