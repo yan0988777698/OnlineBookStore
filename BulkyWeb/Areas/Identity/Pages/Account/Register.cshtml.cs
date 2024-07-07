@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Bulky.DataAccess.Repo.IRepo;
 using Bulky.Models;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Authentication;
@@ -34,6 +35,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -41,7 +43,8 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             IUserStore<IdentityUser> userStore,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -50,9 +53,10 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _unitOfWork = unitOfWork;
         }
 
-        
+
         [BindProperty]
         public InputModel Input { get; set; }
 
@@ -60,14 +64,14 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-      
+
         public class InputModel
         {
-            [Required(ErrorMessage ="信箱 為必填")]
+            [Required(ErrorMessage = "信箱 為必填")]
             [EmailAddress]
             [Display(Name = "信箱")]
             public string Email { get; set; }
-            
+
             [Required(ErrorMessage = "密碼 為必填")]
             [StringLength(100, ErrorMessage = "{0}長度至少為 {2} 最多為 {1} ", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -81,8 +85,10 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             public string Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+            [ValidateNever]
+            public IEnumerable<SelectListItem> CompanyList { get; set; }
             [Required(ErrorMessage = "暱稱 為必填")]
-            public string Name {  get; set; }
+            public string Name { get; set; }
             [Required(ErrorMessage = "縣市 為必填")]
             public string? City { get; set; }
             [Required(ErrorMessage = "鄉鎮區 為必填")]
@@ -91,6 +97,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             public string? StreetAddress { get; set; }
             [Required(ErrorMessage = "電話 為必填")]
             public string PhoneNumber { get; set; }
+            public int? CompanyId { get; set; }
         }
 
 
@@ -105,7 +112,17 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             }
             Input = new InputModel()
             {
-                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem { Text = i, Value = i })
+                RoleList = _roleManager.Roles.Select(x => x.Name).Select(i => new SelectListItem
+                {
+                    Text = i,
+                    Value = i
+                }),
+                CompanyList = _unitOfWork.Company.GetAll().Select(i => new SelectListItem
+                {
+                    Text = i.Name,
+                    Value = i.Id.ToString()
+                })
+
             };
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -126,6 +143,10 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 user.StreetAddress = Input.StreetAddress;
                 user.Name = Input.Name;
                 user.PhoneNumber = Input.PhoneNumber;
+                if (Input.Role == SD.Role_Company)
+                {
+                    user.CompanyId = Input.CompanyId;
+                }
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

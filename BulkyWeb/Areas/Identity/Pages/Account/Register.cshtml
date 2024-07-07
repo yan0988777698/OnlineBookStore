@@ -64,6 +64,11 @@
                             <option disabled selected>--選擇身分--</option>
                         </select>
                     </div>
+                    <div class="form-floating mb-3 col-md-6">
+                        <select asp-for="Input.CompanyId" style="display:none" asp-items="Model.Input.CompanyList" class="form-select">
+                            <option disabled selected>--選擇公司--</option>
+                        </select>
+                    </div>
                     <div class="col-12">
                         <button id="registerSubmit" type="submit" class="w-100 btn btn-md btn-primary rounded">註冊為新用戶</button>
                     </div>
@@ -109,4 +114,16 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        const Input_Role = document.getElementById('Input_Role');
+        const Input_CompanyId = document.getElementById('Input_CompanyId');
+        Input_Role.addEventListener('change', function () {
+            if (Input_Role.value == 'Company') {
+                Input_CompanyId.style.display = 'block';
+            }
+            else {
+                Input_CompanyId.style.display = 'none';
+            }
+        })
+    </script>
 }
