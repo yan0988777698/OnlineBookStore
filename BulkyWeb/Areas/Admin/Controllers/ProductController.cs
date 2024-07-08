@@ -54,7 +54,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             {
                 string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 string productPath = Path.Combine(wwwRootPath, @"Images\Product", fileName);
-                //TODO:照片更新
+                //照片更新
                 if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
                 {
                     //刪除舊照片

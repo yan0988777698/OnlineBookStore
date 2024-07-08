@@ -17,10 +17,12 @@ namespace Bulky.Models
         [ValidateNever]
         public Product Product { get; set; }
         [Range(1, 1000,ErrorMessage ="請輸入數量 (1 - 1000)")]
-        public int Count { get;set; }
+        public int Count { get;set; }   
         public string UserId {  get; set; }
         [ForeignKey("UserId")]
         [ValidateNever]
         public ApplicationUser User { get; set; }
+        [NotMapped]
+        public double? Price { get; set; }
     }
 }
