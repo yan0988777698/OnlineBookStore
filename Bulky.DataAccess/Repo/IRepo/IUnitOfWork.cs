@@ -13,6 +13,8 @@ namespace Bulky.DataAccess.Repo.IRepo
         ICompanyRepo Company { get; }
         IShoppingCartRepo ShoppingCart { get; }
         IApplicationUserRepo ApplicationUser { get; }
+        IOrderHeaderRepo OrderHeader { get; set; }
+        IOrderDetailRepo OrderDetail { get; set; }
         void Save();
     }
 }

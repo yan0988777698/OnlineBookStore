@@ -33,7 +33,10 @@ namespace BulkyWeb.Areas.Customer.Controllers
             shoppingCartVM = new()
             {
                 ShoppingCartList = shoppingCartByUserId,
-                OrderTotal = (double)sum,
+                OrderHeader=new OrderHeader
+                {
+                    OrderTotal = (double)sum
+                }
             };
             return View(shoppingCartVM);
         }
@@ -82,7 +85,65 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Summary()
         {
-            return View();
+            double? sum = 0;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            IEnumerable<ShoppingCart> shoppingCartByUserId = _unitOfWork.ShoppingCart.GetAll(x => x.UserId == userId, includeProperties: "Product");
+            foreach (var item in shoppingCartByUserId)
+            {
+                item.Price = GetPriceBasedOnQuantity(item);
+                sum += item.Price * item.Count;
+            }
+            ApplicationUser user = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == userId);
+            shoppingCartVM = new()
+            {
+                ShoppingCartList = shoppingCartByUserId,
+                OrderHeader = new OrderHeader
+                {
+                    ApplicationUser = user,
+                    Name = user.Name,
+                    PhoneNumber = user.PhoneNumber,
+                    StreetAddress = user.StreetAddress,
+                    Region = user.Region,
+                    City = user.City,
+                    PostalCode = user.PostalCode,
+                    OrderTotal = (double)sum
+                }
+            };
+            return View(shoppingCartVM);
+        }
+        [HttpPost]
+        [ActionName("Summary")]
+        public IActionResult SummaryPOST()
+        {
+            double? sum = 0;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            IEnumerable<ShoppingCart> shoppingCartByUserId = _unitOfWork.ShoppingCart.GetAll(x => x.UserId == userId, includeProperties: "Product");
+            foreach (var item in shoppingCartByUserId)
+            {
+                item.Price = GetPriceBasedOnQuantity(item);
+                sum += item.Price * item.Count;
+            }
+            ApplicationUser user = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == userId);
+            shoppingCartVM = new()
+            {
+                ShoppingCartList = shoppingCartByUserId,
+                OrderHeader = new OrderHeader
+                {
+                    ApplicationUser = user,
+                    Name = user.Name,
+                    PhoneNumber = user.PhoneNumber,
+                    StreetAddress = user.StreetAddress,
+                    Region = user.Region,
+                    City = user.City,
+                    PostalCode = user.PostalCode,
+                    OrderTotal = (double)sum
+                }
+            };
+            return View(shoppingCartVM);
         }
     }
 }
