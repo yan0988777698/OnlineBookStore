@@ -37,7 +37,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             shoppingCartVM = new()
             {
                 ShoppingCartList = shoppingCartByUserId,
-                OrderHeader=new OrderHeader
+                OrderHeader = new OrderHeader
                 {
                     OrderTotal = (double)sum
                 }
@@ -129,7 +129,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             shoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
             shoppingCartVM.OrderHeader.ApplicationUserId = userId;
             shoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == userId);
-            
+
 
             foreach (var item in shoppingCartVM.ShoppingCartList)
             {
@@ -137,8 +137,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
                 sum += item.Price * item.Count;
             }
             shoppingCartVM.OrderHeader.OrderTotal = (double)sum;
-            
-            if(shoppingCartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+
+            if (shoppingCartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 //一般使用者，先付款後出貨
                 shoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
@@ -153,7 +153,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             _unitOfWork.OrderHeader.Add(shoppingCartVM.OrderHeader);
             _unitOfWork.Save();
 
-            foreach(var item in shoppingCartVM.ShoppingCartList)
+            foreach (var item in shoppingCartVM.ShoppingCartList)
             {
                 OrderDetail order = new()
                 {
@@ -166,7 +166,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
             }
             _unitOfWork.Save();
 
-            if(shoppingCartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
+            if (shoppingCartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
             {
                 var domain = "https://localhost:7120/";
                 //一般帳戶導向結帳畫面
@@ -177,7 +177,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
                     LineItems = new List<SessionLineItemOptions>(),
                     Mode = "payment",
                 };
-                foreach(var item in shoppingCartVM.ShoppingCartList)
+                foreach (var item in shoppingCartVM.ShoppingCartList)
                 {
                     var sessionLineItem = new SessionLineItemOptions
                     {
@@ -200,17 +200,35 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
                 _unitOfWork.OrderHeader.UpdateStripePaymentId(shoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
                 _unitOfWork.Save();
-
+                //重新導向
                 Response.Headers.Add("Location", session.Url);
                 return new StatusCodeResult(303);
             }
 
             //公司用戶導向確認畫面
-            return RedirectToAction(nameof(OrderConfirmation), new {id = shoppingCartVM.OrderHeader.Id});
+            return RedirectToAction(nameof(OrderConfirmation), new { id = shoppingCartVM.OrderHeader.Id });
         }
 
         public IActionResult OrderConfirmation(int id)
         {
+            OrderHeader orderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == id, includeProperties: "ApplicationUser");
+            if (orderHeader.PaymentStatus != SD.PaymentStatusApprovedForDelayedPayment)
+            {
+                //一般消費者訂單
+                var service = new SessionService();
+                Session session = service.Get(orderHeader.SessionId);
+
+                if (session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.OrderHeader.UpdateStripePaymentId(id, session.Id, session.PaymentIntentId);
+                    _unitOfWork.OrderHeader.UpdateStatus(id, SD.OrderStatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
+                }
+            }
+            //清除購物車
+            List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(x => x.UserId == orderHeader.ApplicationUserId).ToList();
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
             return View(id);
         }
     }
