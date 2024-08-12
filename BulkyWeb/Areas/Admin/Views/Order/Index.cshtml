@@ -1,0 +1,71 @@
+﻿@{
+    var status = Context.Request.Query["status"];
+    var inprocess = "text-primary";
+    var pending = "text-primary";
+    var completed = "text-primary";
+    var approved = "text-primary";
+    var all = "text-primary";
+
+    switch (status)
+    {
+        case "inprocess":
+            inprocess = "active text-white bg-primary";
+            break;
+        case "pending":
+            pending = "active text-white bg-primary";
+            break;
+        case "completed":
+            completed = "active text-white bg-primary";
+            break;
+        case "approved":
+            approved = "active text-white bg-primary";
+            break;
+        default:
+            all = "active text-white bg-primary";
+            break;
+    }
+}
+
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">訂單列表</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary"><i class="bi bi-plus-square"></i>新增商品</a>
+        </div>
+    </div>
+    <ul class="list-group list-group-horizontal-sm">
+        <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="pending">
+        <li class="list-group-item @pending">尚未付款</li>
+        </a>
+        <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="approved">
+        <li class="list-group-item @approved">付款完成</li>
+        </a>
+        <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
+        <li class="list-group-item @inprocess">備貨中</li>
+        </a>
+        <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+        <li class="list-group-item @completed">已出貨</li>
+        </a>
+        <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="all">
+        <li class="list-group-item @all">全部訂單</li>
+        </a>
+    </ul>
+    <table class="table table-bordered table-striped" id="tblData">
+        <thead>
+            <tr>
+                <th>編號</th>
+                <th>姓名</th>
+                <th>連絡電話</th>
+                <th>信箱</th>
+                <th>狀態</th>
+                <th>總額</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@section Scripts {
+    <script src="~/js/order.js"></script>
+}

@@ -83,7 +83,6 @@ namespace BulkyWeb.Areas.Admin.Controllers
             TempData["success"] = "商品新增成功";
             return RedirectToAction("List");
         }
-
         public IActionResult Delete(int id)
         {
             Product product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
@@ -98,7 +97,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             TempData["success"] = "商品刪除成功";
             return RedirectToAction("List");
         }
-        #region API
+        #region API CALLS
         [HttpGet]
         public IActionResult GetAll()
         {
