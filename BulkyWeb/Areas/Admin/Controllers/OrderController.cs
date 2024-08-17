@@ -1,5 +1,6 @@
 ﻿using Bulky.DataAccess.Repo.IRepo;
 using Bulky.Models;
+using Bulky.Models.ViewModels;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,15 @@ namespace BulkyWeb.Areas.Admin.Controllers
         {
             return View();
         }
+        public IActionResult Details(int orderId)
+        {
+            OrderVM orderVM = new()
+            {
+                OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == orderId, includeProperties: "ApplicationUser"),
+                OrderDetail = _unitOfWork.OrderDetail.GetAll(x => x.OrderHeaderId == orderId)
+            };
+            return View();
+        }
 
         #region API CALLS
         [HttpGet]
@@ -32,7 +42,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     orderHeaders = orderHeaders.Where(x => x.OrderStatus == SD.OrderStatusProcessing);
                     break;
                 case "pending":
-                    orderHeaders = orderHeaders.Where(x => x.PaymentStatus == SD.PaymentStatusApprovedForDelayedPayment);
+                    orderHeaders = orderHeaders.Where(x => x.OrderStatus == SD.OrderStatusPanding);
                     break;
                 case "completed":
                     orderHeaders = orderHeaders.Where(x => x.OrderStatus == SD.OrderStatusShipped);
@@ -43,7 +53,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                 default:
                     break;
             }
-            
+
             return Json(new { data = orderHeaders });
         }
 

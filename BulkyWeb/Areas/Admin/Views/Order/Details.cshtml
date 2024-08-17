@@ -1,0 +1,178 @@
+﻿@model OrderVM
+<form method="post">
+    <br />
+    <div class="container">
+        <div class="card">
+            <div class="card-header bg-primary text-light ml-0">
+                <div class="container row">
+                    <div class="col-12 d-none d-md-block col-md-6 fs-5">
+                        <i class="fas fa-shopping-cart"></i> &nbsp; 訂單明細
+                    </div>
+                    <div class="col-12 col-md-2 offset-md-4 text-right">
+                        <a asp-action="Index" class="btn btn-secondary form-control btn-sm">返回訂單列表</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 pb-4">
+                            <div class="row">
+                                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                    <span class="text-primary">取貨人資訊:</span>
+                                </h4>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">姓名</div>
+                                <div class="col-9">
+                                    @if(User.IsInRole(SD.Role_Admin)||User.IsInRole(SD.Role_Employee)){
+                                        <input asp-for="OrderHeader.Name" type="text" class="form-control" />
+                                        <span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="OrderHeader.Name" readonly type="text" class="form-control" />
+                                    }
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">電話</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">詳細地址</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">縣市</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">鄉鎮區</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">郵遞區號</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">信箱</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">訂單日期</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">物流公司</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">貨物狀態</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">出貨日期</div>
+                                <div class="col-9">
+                                    <input type="text" readonly class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="row my-1">
+                                <div class="col-3">交易識別碼</div>
+                                <div class="col-9">
+                                    <input type="text" readonly class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">付款識別碼</div>
+                                <div class="col-9">
+                                    <input type="text" readonly class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="row my-1">
+
+                                <div class="col-3">付款到期日</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">付款日期</div>
+                                <div class="col-9">
+                                    <input type="text" class="form-control" />
+                                </div>
+
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">付款狀態</div>
+                                <div class="col-9">
+                                    <input type="text" readonly class="form-control" />
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-warning form-control my-1" value="Update Order Details" />
+
+                        </div>
+                        <div class="col-12 col-lg-5 offset-lg-1">
+                            <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                <span class="text-primary">Order Summary</span>
+                            </h4>
+                            <label class="btn btn-outline-primary form-control my-2">Order Status - XXOrderStatusXX</label>
+
+                            <ul class="list-group mb-3">
+
+                                <li class="list-group-item d-flex justify-content-between p-2">
+                                    <div class="row container">
+                                        <div class="col-8">
+
+                                            <h6 class="my-0 text-primary">Title</h6>
+                                            <small class="text-muted">Price : $$$</small><br />
+                                            <small class="text-muted">Quantity : XX</small>
+                                        </div>
+                                        <div class="col-4 text-end">
+                                            <p class="text-success">Count * Price</p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item bg-primary">
+                                    <div class="row container">
+                                        <div class="col-6">
+                                            <h5 class="text-white">TOTAL </h5>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <h5 class="text-white">$$$$</h5>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
+                            <input type="submit" class="btn btn-primary form-control my-1" value="Start Processing" />
+                            <input type="submit" class="btn btn-primary form-control my-1" value="Ship Order" />
+                            <input type="submit" class="btn btn-danger form-control my-1" value="Cancel Order" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
