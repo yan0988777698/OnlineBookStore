@@ -4,6 +4,7 @@ using Bulky.Models.ViewModels;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe.Climate;
 using System.Diagnostics;
 
 namespace BulkyWeb.Areas.Admin.Controllers
@@ -14,7 +15,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         [BindProperty]
-        private OrderVM _orderVM {  get; set; }
+        public OrderVM _OrderVM {  get; set; }
         public OrderController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -25,23 +26,33 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult Details(int orderId)
         {
-            _orderVM = new()
+            _OrderVM = new()
             {
                 OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == orderId, includeProperties: "ApplicationUser"),
                 OrderDetail = _unitOfWork.OrderDetail.GetAll(x => x.OrderHeaderId == orderId, includeProperties: "Product")
             };
-            return View(_orderVM);
+            return View(_OrderVM);
         }
         [HttpPost]
-        [Authorize(SD.Role_Admin +","+ SD.Role_Employee)]
-        public IActionResult UpdateOrderDetail(int orderId)
+        [Authorize(Roles = SD.Role_Admin +","+ SD.Role_Employee)]
+        public IActionResult UpdateOrderDetail()
         {
-            OrderVM orderVM = new()
-            {
-                OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == orderId, includeProperties: "ApplicationUser"),
-                OrderDetail = _unitOfWork.OrderDetail.GetAll(x => x.OrderHeaderId == orderId, includeProperties: "Product")
-            };
-            return View(orderVM);
+            OrderHeader orderHeaderFromDb = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == _OrderVM.OrderHeader.Id);
+            orderHeaderFromDb.Name = _OrderVM.OrderHeader.Name;
+            orderHeaderFromDb.PhoneNumber = _OrderVM.OrderHeader.PhoneNumber;
+            orderHeaderFromDb.StreetAddress = _OrderVM.OrderHeader.StreetAddress;
+            orderHeaderFromDb.Region = _OrderVM.OrderHeader.Region;
+            orderHeaderFromDb.City = _OrderVM.OrderHeader.City;
+            orderHeaderFromDb.PostalCode = _OrderVM.OrderHeader.PostalCode;
+            if(!string.IsNullOrEmpty(_OrderVM.OrderHeader.Carrier))
+                orderHeaderFromDb.Carrier = _OrderVM.OrderHeader.Carrier;
+            if (!string.IsNullOrEmpty(_OrderVM.OrderHeader.TrackingNumber))
+                orderHeaderFromDb.TrackingNumber = _OrderVM.OrderHeader.TrackingNumber;
+            _unitOfWork.OrderHeader.Update(orderHeaderFromDb);
+            _unitOfWork.Save();
+
+            TempData["Success"] = "訂單修改成功";
+            return RedirectToAction(nameof(Details), new { orderId = orderHeaderFromDb.Id});
         }
 
         #region API CALLS

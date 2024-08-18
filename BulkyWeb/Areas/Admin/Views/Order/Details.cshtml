@@ -195,7 +195,7 @@
                             </div>
                             @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                             {
-                                <input type="submit" asp-action="UpdateOrderDetail" class="btn btn-warning form-control my-1" value="更新訂單資訊" />
+                                <button type="submit" asp-action="UpdateOrderDetail" class="btn btn-warning form-control my-1">更新訂單資訊</button>
                             }
                         </div>
                         <div class="col-12 col-lg-5 offset-lg-1">
