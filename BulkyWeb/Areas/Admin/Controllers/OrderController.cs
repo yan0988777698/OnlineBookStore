@@ -13,6 +13,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
     public class OrderController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        [BindProperty]
+        private OrderVM _orderVM {  get; set; }
         public OrderController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -23,12 +25,23 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult Details(int orderId)
         {
+            _orderVM = new()
+            {
+                OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == orderId, includeProperties: "ApplicationUser"),
+                OrderDetail = _unitOfWork.OrderDetail.GetAll(x => x.OrderHeaderId == orderId, includeProperties: "Product")
+            };
+            return View(_orderVM);
+        }
+        [HttpPost]
+        [Authorize(SD.Role_Admin +","+ SD.Role_Employee)]
+        public IActionResult UpdateOrderDetail(int orderId)
+        {
             OrderVM orderVM = new()
             {
                 OrderHeader = _unitOfWork.OrderHeader.GetFirstOrDefault(x => x.Id == orderId, includeProperties: "ApplicationUser"),
-                OrderDetail = _unitOfWork.OrderDetail.GetAll(x => x.OrderHeaderId == orderId)
+                OrderDetail = _unitOfWork.OrderDetail.GetAll(x => x.OrderHeaderId == orderId, includeProperties: "Product")
             };
-            return View();
+            return View(orderVM);
         }
 
         #region API CALLS
