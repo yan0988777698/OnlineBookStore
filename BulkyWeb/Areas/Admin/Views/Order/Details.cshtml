@@ -124,7 +124,7 @@
                                 <div class="col-9">
                                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                                     {
-                                        <input asp-for="OrderHeader.Carrier" type="text" class="form-control" />
+                                        <input asp-for="OrderHeader.Carrier" id="carrier" type="text" class="form-control" />
                                     }
                                     else
                                     {
@@ -133,11 +133,11 @@
                                 </div>
                             </div>
                             <div class="row my-1">
-                                <div class="col-3">貨物狀態</div>
+                                <div class="col-3">貨物編號</div>
                                 <div class="col-9">
                                     @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
                                     {
-                                        <input asp-for="OrderHeader.TrackingNumber" type="text" class="form-control" />
+                                        <input asp-for="OrderHeader.TrackingNumber" id="trackingNumber" type="text" class="form-control" />
                                     }
                                     else
                                     {
@@ -232,10 +232,28 @@
                                     </div>
                                 </li>
                             </ul>
-                            <input type="submit" class="btn btn-success form-control my-1" value="Pay Now" />
-                            <input type="submit" class="btn btn-primary form-control my-1" value="Start Processing" />
-                            <input type="submit" class="btn btn-primary form-control my-1" value="Ship Order" />
-                            <input type="submit" class="btn btn-danger form-control my-1" value="Cancel Order" />
+                            @if (Model.OrderHeader.OrderStatus == SD.OrderStatusShipped
+                            && Model.OrderHeader.PaymentStatus == SD.PaymentStatusApprovedForDelayedPayment)
+                            {
+                                <button type="submit" class="btn btn-success form-control my-1">付款</button>
+                            }
+                            @if (User.IsInRole(SD.Role_Admin) || User.IsInRole(SD.Role_Employee))
+                            {
+                                if (Model.OrderHeader.OrderStatus == SD.OrderStatusApproved)
+                                {
+                                    <button type="submit" asp-action="StartProcessing" class="btn btn-primary form-control my-1">開始備貨</button>
+                                }
+                                if (Model.OrderHeader.OrderStatus == SD.OrderStatusProcessing)
+                                {
+                                    <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-primary form-control my-1">出貨</button>
+                                }
+                                if (Model.OrderHeader.OrderStatus != SD.OrderStatusRefunded
+                                && Model.OrderHeader.OrderStatus != SD.OrderStatusShipped
+                                && Model.OrderHeader.OrderStatus != SD.OrderStatusCancelled)
+                                {
+                                    <button type="submit" asp-action="CancelOrder" class="btn btn-danger form-control my-1">取消訂單</button>
+                                }
+                            }
                         </div>
                     </div>
                 </div>
@@ -243,3 +261,28 @@
         </div>
     </div>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"></partial>
+    <script>
+        function validateInput() {
+            if (document.getElementById("trackingNumber").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: '糟糕...',
+                    text: '請輸入貨物編號'
+                });
+                return false;
+            }
+            if (document.getElementById("carrier").value == "") {
+                Swal.fire({
+                    icon: 'error',
+                    title: '糟糕...',
+                    text: '請輸入物流公司'
+                });
+                return false;
+            }
+            return true;
+        }
+    </script>
+}
