@@ -1,0 +1,13 @@
+﻿@model int
+
+<div class="container row pt-4">
+    <div class="col-12 text-center">
+        <h1 class="text-primary text-center">付款完成</h1>
+        <div class="pb-2">您的訂單編號為: @Model</div>
+        <div>
+            <a asp-action="Details" asp-route-orderId="@Model" class="btn btn-primary">查看訂單</a>
+        </div>
+        <br />
+        <img src="~/images/orderconfirmation.jpg" width="65%" />
+    </div>
+</div>
