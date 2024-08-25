@@ -1,5 +1,6 @@
 ﻿using Bulky.DataAccess.Repo.IRepo;
 using Bulky.Models;
+using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -38,28 +39,33 @@ namespace BulkyWeb.Areas.Customer.Controllers
         [Authorize]
         public IActionResult Details(ShoppingCart shoppingCart)
         {
-                var claimsIdentity = (ClaimsIdentity)User.Identity;
-                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                shoppingCart.UserId = userId;
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.UserId = userId;
 
-                ShoppingCart shoppingCartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(
-                     u => u.UserId == userId && u.ProductId == shoppingCart.ProductId);
+            ShoppingCart shoppingCartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(
+                 u => u.UserId == userId && u.ProductId == shoppingCart.ProductId);
 
-                if (shoppingCartFromDb != null)
-                {
-                    //資料存在->修改資料
-                    shoppingCartFromDb.Count += shoppingCart.Count;
-                    _unitOfWork.ShoppingCart.Update(shoppingCartFromDb);
-                }
-                else
-                {
-                    //資料不存在->新增資料
-                    _unitOfWork.ShoppingCart.Add(shoppingCart);
-                }
-                TempData["success"] = "商品加入購物車";
+            if (shoppingCartFromDb != null)
+            {
+                //資料存在->修改資料
+                shoppingCartFromDb.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(shoppingCartFromDb); 
                 _unitOfWork.Save();
+            }
+            else
+            {
+                //資料不存在->新增資料
+                _unitOfWork.ShoppingCart.Add(shoppingCart); 
+                _unitOfWork.Save();
+                //將商品數量加入至Session
+                HttpContext.Session.SetInt32(SD.SessionCart, 
+                    _unitOfWork.ShoppingCart.GetAll(x => x.UserId == userId).Count());
+            }
+            TempData["success"] = "商品加入購物車";
+            
 
-                return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Privacy()
