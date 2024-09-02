@@ -1,0 +1,22 @@
+﻿@model List<Product>
+@{
+    ViewData["Title"] = "List";
+}
+
+<div class="container">
+    <table class="table table-bordered table-striped" id="tblData">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>信箱</th>
+                <th>電話</th>
+                <th>公司</th>
+                <th>身份</th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+</div>
+@section Scripts {
+    <script src="~/js/applicationUser.js"></script>
+}

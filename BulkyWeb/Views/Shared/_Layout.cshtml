@@ -51,28 +51,17 @@
                                         <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="List">公司</a>
                                     </li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="ApplicationUser" asp-action="Index">管理使用者</a>
+                                    </li>
                                 </ul>
                             </li>
                         }
-                        @if (_IHttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionCart) != null)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index">
-                                    <i class="bi bi-cart"></i> &nbsp;
-                                    (@_IHttpContextAccessor.HttpContext.Session.GetInt32(SD.SessionCart))
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index">
-                                    <i class="bi bi-cart"></i> &nbsp;
-                                    (0)
-                                </a>
-                            </li>
-                        }
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Customer" asp-controller="ShoppingCart" asp-action="Index">
+                                @await Component.InvokeAsync("ShoppingCart")
+                            </a>
+                        </li>
 
 
                     </ul>

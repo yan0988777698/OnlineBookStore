@@ -1,5 +1,4 @@
-﻿using Bulky.DataAccess.Data;
-using Bulky.DataAccess.Repo.IRepo;
+﻿using Bulky.DataAccess.Repo.IRepo;
 using Bulky.Models;
 using Bulky.Models.ViewModels;
 using Bulky.Utility;
@@ -69,6 +68,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var cartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.Id == cartId);
             if (cartFromDb.Count <= 1)
             {
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                _unitOfWork.ShoppingCart.GetAll(x => x.UserId == cartFromDb.UserId).Count() - 1);
                 _unitOfWork.ShoppingCart.Remove(cartFromDb);
             }
             else
@@ -82,6 +83,8 @@ namespace BulkyWeb.Areas.Customer.Controllers
         public IActionResult Remove(int cartId)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.GetFirstOrDefault(x => x.Id == cartId);
+            HttpContext.Session.SetInt32(SD.SessionCart,
+                _unitOfWork.ShoppingCart.GetAll(x => x.UserId == cartFromDb.UserId).Count() - 1);
             _unitOfWork.ShoppingCart.Remove(cartFromDb);
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
