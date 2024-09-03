@@ -21,7 +21,7 @@ function loadDataTable() {
                                     <a onclick = LockUnlock('${data.id}') class="btn btn-danger mx-2">
                                         <i class="bi bi-lock-fill"></i>
                                     </a>
-                                    <a class="btn btn-danger mx-2">
+                                    <a class="btn btn-danger mx-2" href="ApplicationUser/RoleManagement?id=${data.id}">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>`
@@ -30,7 +30,7 @@ function loadDataTable() {
                                     <a onclick = LockUnlock('${data.id}') class="btn btn-success mx-2">
                                         <i class="bi bi-unlock-fill"></i>
                                     </a>
-                                    <a class="btn btn-danger mx-2">
+                                    <a class="btn btn-danger mx-2" href="ApplicationUser/RoleManagement?id=${data.id}">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
                                 </div>`

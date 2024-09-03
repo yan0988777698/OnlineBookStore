@@ -1,0 +1,43 @@
+﻿@model Bulky.Models.ViewModels.RoleManagementVM
+
+
+<div class="card shadow mb-3">
+    <div class="card-header bg-primary">
+        <div class="row">
+            <div class="text-center text-white col-12">
+                <h2>身份管理</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <form>
+            <input class="form-control" asp-for="User.Id" hidden />
+            <div class="form-floating col-12 py-2">
+                <input class="form-control" asp-for="User.Name" readonly />
+            </div>
+            <div class="form-floating col-12 py-2">
+                <select class="form-select" asp-for="User.Role" asp-items="@Model.RoleList"></select>
+            </div>
+            <div class="form-floating col-12 py-2">
+                <select class="form-select" asp-for="User.CompanyId" asp-items="@Model.CompanyList"></select>
+            </div>
+            <div class="row">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-primary form-control">更新</button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a asp-action="Index" class="btn btn-outline-primary form-control">返回清單</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        // 用 jQuery 設置下拉選單的選項
+        $(#Role).val('@Model.User.Role');
+    });
+
+</script>
