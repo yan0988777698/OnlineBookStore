@@ -50,26 +50,26 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
             string wwwRootPath = _env.WebRootPath;
-            if (file != null)
-            {
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                string productPath = Path.Combine(wwwRootPath, @"Images\Product", fileName);
-                //照片更新
-                if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
-                {
-                    //刪除舊照片
-                    string oldFilePath = Path.Combine(_env.WebRootPath, productVM.Product.ImageUrl.Trim('\\'));
-                    if (System.IO.File.Exists(oldFilePath))
-                    {
-                        System.IO.File.Delete(oldFilePath);
-                    }
-                }
-                using (FileStream fs = new FileStream(productPath, FileMode.Create))
-                {
-                    file.CopyTo(fs);
-                }
-                productVM.Product.ImageUrl = @"\Images\Product\" + fileName;
-            }
+            //if (file != null)
+            //{
+            //    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            //    string productPath = Path.Combine(wwwRootPath, @"Images\Product", fileName);
+            //    //照片更新
+            //    if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
+            //    {
+            //        //刪除舊照片
+            //        string oldFilePath = Path.Combine(_env.WebRootPath, productVM.Product.ImageUrl.Trim('\\'));
+            //        if (System.IO.File.Exists(oldFilePath))
+            //        {
+            //            System.IO.File.Delete(oldFilePath);
+            //        }
+            //    }
+            //    using (FileStream fs = new FileStream(productPath, FileMode.Create))
+            //    {
+            //        file.CopyTo(fs);
+            //    }
+            //    productVM.Product.ImageUrl = @"\Images\Product\" + fileName;
+            //}
             if (productVM.Product.Id == 0)
             {
                 _unitOfWork.Product.Add(productVM.Product);
@@ -112,15 +112,15 @@ namespace BulkyWeb.Areas.Admin.Controllers
             {
                 return Json(new { success = false, message = "Product is not found." });
             }
-            if (!string.IsNullOrEmpty(productToBeDeleted.ImageUrl))
-            {
-                //刪除舊照片
-                string oldFilePath = Path.Combine(_env.WebRootPath, productToBeDeleted.ImageUrl.Trim('\\'));
-                if (System.IO.File.Exists(oldFilePath))
-                {
-                    System.IO.File.Delete(oldFilePath);
-                }
-            }
+            //if (!string.IsNullOrEmpty(productToBeDeleted.ImageUrl))
+            //{
+            //    //刪除舊照片
+            //    string oldFilePath = Path.Combine(_env.WebRootPath, productToBeDeleted.ImageUrl.Trim('\\'));
+            //    if (System.IO.File.Exists(oldFilePath))
+            //    {
+            //        System.IO.File.Delete(oldFilePath);
+            //    }
+            //}
             
             _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();

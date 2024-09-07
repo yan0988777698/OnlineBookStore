@@ -1,16 +1,20 @@
 ﻿@model Bulky.Models.ViewModels.RoleManagementVM
 
-
+@{
+    var companyVisible = "display : none";
+    if (Model.User.Role == SD.Role_Company)
+        companyVisible = "display : block";
+}
 <div class="card shadow mb-3">
     <div class="card-header bg-primary">
         <div class="row">
             <div class="text-center text-white col-12">
                 <h2>身份管理</h2>
             </div>
-        </div>
+        </div>  
     </div>
     <div class="card-body">
-        <form>
+        <form method="post" action="RoleManagementPOST">
             <input class="form-control" asp-for="User.Id" hidden />
             <div class="form-floating col-12 py-2">
                 <input class="form-control" asp-for="User.Name" readonly />
@@ -19,7 +23,7 @@
                 <select class="form-select" asp-for="User.Role" asp-items="@Model.RoleList"></select>
             </div>
             <div class="form-floating col-12 py-2">
-                <select class="form-select" asp-for="User.CompanyId" asp-items="@Model.CompanyList"></select>
+                <select class="form-select" asp-for="User.CompanyId" asp-items="@Model.CompanyList" style="@companyVisible"></select>
             </div>
             <div class="row">
                 <div class="col-6 col-md-3">
@@ -33,11 +37,19 @@
     </div>
 </div>
 
-
-<script>
-    $(document).ready(function () {
-        // 用 jQuery 設置下拉選單的選項
-        $(#Role).val('@Model.User.Role');
-    });
-
-</script>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            // 用 jQuery 設置下拉選單的選項
+            $('#User_Role').change(function () {
+                var selection = $('#User_Role Option:Selected').text();
+                if (selection == '@SD.Role_Company') {
+                    $('#User_CompanyId').show();
+                }
+                else{
+                    $('#User_CompanyId').hide();
+                }
+            })
+        });
+    </script>
+}

@@ -1,14 +1,12 @@
 ﻿using Bulky.DataAccess.Data;
-using Bulky.DataAccess.Repo;
-using Bulky.DataAccess.Repo.IRepo;
 using Bulky.Models;
 using Bulky.Models.ViewModels;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
@@ -17,9 +15,11 @@ namespace BulkyWeb.Areas.Admin.Controllers
     public class ApplicationUserController : Controller
     {
         private readonly AppDbContext _appDbContext;
-        public ApplicationUserController(AppDbContext appDbContext)
+        private readonly UserManager<IdentityUser> _userManager;
+        public ApplicationUserController(AppDbContext appDbContext, UserManager<IdentityUser> userManager)
         {
             _appDbContext = appDbContext;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -47,7 +47,32 @@ namespace BulkyWeb.Areas.Admin.Controllers
             roleManagementVM.User.Role = _appDbContext.Roles.FirstOrDefault(x => x.Id == roleId).Name;
             return View(roleManagementVM);
         }
+        [HttpPost]
+        public IActionResult RoleManagementPOST(RoleManagementVM vm)
+        {
+            string roleId = _appDbContext.UserRoles.FirstOrDefault(x => x.UserId == vm.User.Id).RoleId;
+            string oldRole = _appDbContext.Roles.FirstOrDefault(x => x.Id == roleId).Name;
+            
+            if(vm.User.Role != oldRole)
+            {
+                ApplicationUser user = _appDbContext.ApplicationUsers.FirstOrDefault(x => x.Id == vm.User.Id);
+                if(vm.User.Role == SD.Role_Company)
+                {
+                    user.CompanyId = vm.User.CompanyId;
+                }
+                if(oldRole == SD.Role_Company)
+                {
+                    user.CompanyId = null;
+                }
+                _appDbContext.SaveChanges();
 
+                _userManager.RemoveFromRoleAsync(user, oldRole).GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(user, vm.User.Role).GetAwaiter().GetResult();
+
+            }
+            
+            return RedirectToAction("Index");
+        }
 
         #region API CALLS
         [HttpGet]
