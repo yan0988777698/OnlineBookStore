@@ -47,11 +47,11 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
         }
         [HttpPost]
-        public IActionResult Upsert(ProductVM productVM, IFormFile? file)
+        public IActionResult Upsert(ProductVM productVM, List<IFormFile> files)
         {
             string wwwRootPath = _env.WebRootPath;
-            //if (file != null)
-            //{
+            if (files != null)
+            {
             //    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
             //    string productPath = Path.Combine(wwwRootPath, @"Images\Product", fileName);
             //    //照片更新
@@ -69,7 +69,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             //        file.CopyTo(fs);
             //    }
             //    productVM.Product.ImageUrl = @"\Images\Product\" + fileName;
-            //}
+            }
             if (productVM.Product.Id == 0)
             {
                 _unitOfWork.Product.Add(productVM.Product);

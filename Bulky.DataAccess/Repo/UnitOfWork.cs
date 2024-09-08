@@ -14,22 +14,24 @@ namespace Bulky.DataAccess.Repo
         public ICategoryRepo Category { get; private set; }
         public IProductRepo Product { get; private set; }
         public ICompanyRepo Company { get; private set; }
-        public IShoppingCartRepo ShoppingCart { get; set; }
-        public IApplicationUserRepo ApplicationUser { get; set; }
-        public IOrderHeaderRepo OrderHeader { get; set; }
-        public IOrderDetailRepo OrderDetail { get; set; }
+        public IShoppingCartRepo ShoppingCart { get; private set; }
+        public IApplicationUserRepo ApplicationUser { get; private set; }
+        public IOrderHeaderRepo OrderHeader { get; private set; }
+        public IOrderDetailRepo OrderDetail { get; private set; }
+        public IProductImageRepo ProductImage { get; private set; }
 
         private readonly AppDbContext _db;
         public UnitOfWork(AppDbContext db)
         {
             _db = db;
-            Category = new CategoryRepo(_db);
-            Product = new ProductRepo(_db);
-            Company = new CompanyRepo(_db);
-            ShoppingCart = new ShoppingCartRepo(_db);
             ApplicationUser = new ApplicationUserRepo(_db);
+            Category = new CategoryRepo(_db);
+            Company = new CompanyRepo(_db);
             OrderHeader = new OrderHeaderRepo(_db);
             OrderDetail = new OrderDetailRepo(_db);
+            Product = new ProductRepo(_db);
+            ProductImage = new ProductImageRepo(_db);
+            ShoppingCart = new ShoppingCartRepo(_db);
         }
         public void Save()
         {
