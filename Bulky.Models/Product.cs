@@ -49,6 +49,7 @@ namespace Bulky.Models
         //[Display(Name = "圖片上傳")]
         //public string? ImageUrl { get; set; }
         [ValidateNever]
+        [Display(Name ="產品照片")]
         public List<ProductImage> ProductImages { get; set; }
     }
 }

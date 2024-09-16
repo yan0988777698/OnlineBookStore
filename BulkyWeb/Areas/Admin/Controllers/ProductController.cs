@@ -1,4 +1,5 @@
-﻿using Bulky.DataAccess.Repo.IRepo;
+﻿using Bulky.DataAccess.Repo;
+using Bulky.DataAccess.Repo.IRepo;
 using Bulky.Models;
 using Bulky.Models.ViewModels;
 using Bulky.Utility;
@@ -50,26 +51,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult Upsert(ProductVM productVM, List<IFormFile> files)
         {
             string wwwRootPath = _env.WebRootPath;
-            if (files != null)
-            {
-            //    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            //    string productPath = Path.Combine(wwwRootPath, @"Images\Product", fileName);
-            //    //照片更新
-            //    if (!string.IsNullOrEmpty(productVM.Product.ImageUrl))
-            //    {
-            //        //刪除舊照片
-            //        string oldFilePath = Path.Combine(_env.WebRootPath, productVM.Product.ImageUrl.Trim('\\'));
-            //        if (System.IO.File.Exists(oldFilePath))
-            //        {
-            //            System.IO.File.Delete(oldFilePath);
-            //        }
-            //    }
-            //    using (FileStream fs = new FileStream(productPath, FileMode.Create))
-            //    {
-            //        file.CopyTo(fs);
-            //    }
-            //    productVM.Product.ImageUrl = @"\Images\Product\" + fileName;
-            }
+
             if (productVM.Product.Id == 0)
             {
                 _unitOfWork.Product.Add(productVM.Product);
@@ -80,7 +62,34 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
 
             _unitOfWork.Save();
-            TempData["success"] = "商品新增成功";
+            if (files != null)
+            {
+                foreach (IFormFile file in files)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = @"Images\Products\Product-" + productVM.Product.Id;
+                    string finalPath = Path.Combine(wwwRootPath, productPath);
+
+                    if (!Directory.Exists(finalPath))
+                        Directory.CreateDirectory(finalPath);
+                    using (FileStream fs = new FileStream(Path.Combine(finalPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fs);
+                    }
+                    ProductImage image = new()
+                    {
+                        ImageUrl = Path.Combine(productPath, fileName),
+                        ProductId = productVM.Product.Id,
+                    };
+                    if (productVM.Product.ProductImages == null)
+                        productVM.Product.ProductImages = new List<ProductImage>();
+
+                    productVM.Product.ProductImages.Add(image);
+                }
+                _unitOfWork.Product.Update(productVM.Product);
+                _unitOfWork.Save();
+            }
+            TempData["success"] = "商品新增/更新成功";
             return RedirectToAction("List");
         }
         public IActionResult Delete(int id)
@@ -121,7 +130,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             //        System.IO.File.Delete(oldFilePath);
             //    }
             //}
-            
+
             _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete Successful" });
