@@ -28,8 +28,11 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
             IEnumerable<ShoppingCart> shoppingCartByUserId = _unitOfWork.ShoppingCart.GetAll(x => x.UserId == userId, includeProperties: "Product");
+
+            IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
             foreach (var item in shoppingCartByUserId)
             {
+                item.Product.ProductImages = productImages.Where(x => x.ProductId == item.Product.Id).ToList();
                 item.Price = GetPriceBasedOnQuantity(item);
                 sum += item.Price * item.Count;
             }

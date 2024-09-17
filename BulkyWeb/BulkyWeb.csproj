@@ -37,10 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\Images\Product\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\js\company.js" />
     <None Include="wwwroot\js\order.js" />
     <None Include="wwwroot\js\applicationUser.js" />
@@ -52,6 +48,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Products\" />
   </ItemGroup>
 
 </Project>

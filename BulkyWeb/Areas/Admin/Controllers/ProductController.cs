@@ -43,7 +43,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             }
             else
             {
-                productVM.Product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id);
+                productVM.Product = _unitOfWork.Product.GetFirstOrDefault(x => x.Id == id, includeProperties: "ProductImages");
                 return View(productVM);
             }
         }
@@ -78,7 +78,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     }
                     ProductImage image = new()
                     {
-                        ImageUrl = Path.Combine(productPath, fileName),
+                        ImageUrl = @"\" + Path.Combine(productPath, fileName),
                         ProductId = productVM.Product.Id,
                     };
                     if (productVM.Product.ProductImages == null)
@@ -106,6 +106,27 @@ namespace BulkyWeb.Areas.Admin.Controllers
             TempData["success"] = "商品刪除成功";
             return RedirectToAction("List");
         }
+
+        public IActionResult DeleteImage(int ImageId)
+        {
+            ProductImage imageToBeDeleted = _unitOfWork.ProductImage.GetFirstOrDefault(x => x.Id == ImageId);
+            int productId = imageToBeDeleted.ProductId;
+            if (imageToBeDeleted != null)
+            {
+                if (!string.IsNullOrEmpty(imageToBeDeleted.ImageUrl))
+                {
+                    var filePath = Path.Combine(_env.WebRootPath, imageToBeDeleted.ImageUrl.Trim('\\'));
+                    if (System.IO.File.Exists(filePath))
+                    {
+                        System.IO.File.Delete(filePath);
+                    }
+                    _unitOfWork.ProductImage.Remove(imageToBeDeleted);
+                }
+                _unitOfWork.Save();
+            }
+            TempData["success"] = "刪除成功";
+            return RedirectToAction("Upsert", new { id = productId });
+        }
         #region API CALLS
         [HttpGet]
         public IActionResult GetAll()
@@ -121,16 +142,18 @@ namespace BulkyWeb.Areas.Admin.Controllers
             {
                 return Json(new { success = false, message = "Product is not found." });
             }
-            //if (!string.IsNullOrEmpty(productToBeDeleted.ImageUrl))
-            //{
-            //    //刪除舊照片
-            //    string oldFilePath = Path.Combine(_env.WebRootPath, productToBeDeleted.ImageUrl.Trim('\\'));
-            //    if (System.IO.File.Exists(oldFilePath))
-            //    {
-            //        System.IO.File.Delete(oldFilePath);
-            //    }
-            //}
+            string productPath = @"Images\Products\Product-" + id;
+            string finalPath = Path.Combine(_env.WebRootPath, productPath);
+            if (Directory.Exists(finalPath))
+            {
 
+                string[] filePaths = Directory.GetFiles(finalPath);
+                foreach (string filePath in filePaths)
+                {
+                    System.IO .File.Delete(filePath);
+                }
+                Directory.Delete(finalPath);
+            }
             _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();
             return Json(new { success = true, message = "Delete Successful" });

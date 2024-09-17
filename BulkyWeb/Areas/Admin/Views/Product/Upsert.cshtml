@@ -99,8 +99,18 @@
             </div>
         </div>
         <div class="col-2">
-            @* <img src="@Model.Product.ImageUrl" class="border" style="width:200px" /> *@
-
+            @if(Model.Product.ProductImages != null)
+            {
+                foreach(ProductImage item in Model.Product.ProductImages)
+                {
+                    <div class="border p-1 m-2">
+                        <img src="@item.ImageUrl" class="border w-100" style="width:200px" />
+                        <a asp-action="DeleteImage" asp-route-ImageId="@item.Id" class="btn btn-danger">
+                            <i class="bi bi-trash-fill"></i>
+                        </a>
+                    </div>
+                }
+            }
         </div>
         
     </div>
