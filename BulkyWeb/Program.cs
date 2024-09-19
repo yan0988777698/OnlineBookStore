@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Bulky.Utility;
 using Microsoft.Extensions.DependencyInjection;
 using Stripe;
+using Bulky.DataAccess.DbInit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IDbInit,DbInit>();
 
 builder.Services.AddSwaggerGen();
 
@@ -68,10 +70,19 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
-
+SeedDatabase();
 app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var DbInit = scope.ServiceProvider.GetRequiredService<IDbInit>();
+        DbInit.initialize();
+    }
+}
