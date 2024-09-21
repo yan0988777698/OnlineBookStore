@@ -25,13 +25,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o "D:\Udemy\.NET Core MVC [.NET8]\Bulky\BulkyWeb\bin\Debug\net8.0"
+        run: dotnet publish -c Release -o "D:/Udemy/.NET Core MVC [.NET8]/Bulky/BulkyWeb/bin/Release/net8.0"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: "D:\Udemy\.NET Core MVC [.NET8]\Bulky\BulkyWeb\bin\Debug\net8.0"
+          path: "D:/Udemy/.NET Core MVC [.NET8]/Bulky/BulkyWeb/bin/Release/net8.0"
 
   deploy:
     runs-on: windows-latest
@@ -61,5 +61,5 @@ jobs:
         with:
           app-name: 'bulkyweb'
           slot-name: 'Production'
-          package: "D:\Udemy\.NET Core MVC [.NET8]\Bulky\BulkyWeb\bin\Debug\net8.0"
+          package: "D:/Udemy/.NET Core MVC [.NET8]/Bulky/BulkyWeb/bin/Release/net8.0"
           
