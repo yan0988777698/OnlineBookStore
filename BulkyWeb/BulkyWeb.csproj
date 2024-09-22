@@ -7,10 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\js\applicationUser.js" />
-    <Content Remove="wwwroot\js\company.js" />
-    <Content Remove="wwwroot\js\order.js" />
-    <Content Remove="wwwroot\js\product.js" />
+    <Content Include="wwwroot\js\applicationUser.js" />
+    <Content Include="wwwroot\js\company.js" />
+    <Content Include="wwwroot\js\order.js" />
+    <Content Include="wwwroot\js\product.js" />
   </ItemGroup>
 
   <ItemGroup>
