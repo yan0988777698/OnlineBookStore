@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bulky.Models
 {
@@ -29,17 +24,17 @@ namespace Bulky.Models
         public DateOnly PaymentDueDate { get; set; }
         public string? SessionId { get; set; }
         public string? PaymentIntentId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "連絡電話 必填")]
         public string PhoneNumber { get; set; }
-        [Required]
+        [Required(ErrorMessage = "詳細地址 必填")]
         public string StreetAddress { get; set; }
-        [Required]
+        [Required(ErrorMessage = "鄉鎮區 必填")]
         public string Region { get; set; }
-        [Required]
+        [Required(ErrorMessage = "縣市 必填")]
         public string City { get; set; }
-        [Required]
+        [Required(ErrorMessage ="郵遞區號 必填")]
         public string PostalCode { get; set; }
-        [Required]
+        [Required(ErrorMessage = "姓名 必填")]
         public string Name { get; set; }
     }
 }

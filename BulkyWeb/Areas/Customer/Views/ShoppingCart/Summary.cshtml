@@ -3,7 +3,7 @@
     <br />
     <div class="container">
         <div class="card shadow border-0">
-
+            <input asp-for="@Model.OrderHeader.ApplicationUserId" value="@Model.OrderHeader.ApplicationUser.Id" hidden/>
             <div class="card-header bg-primary bg-gradient text-light ml-0 py-4">
                 <div class="row px-4">
                     <div class="col-6">

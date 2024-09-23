@@ -4,6 +4,8 @@ using Bulky.Models.ViewModels;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 //using Stripe.BillingPortal;
 using Stripe.Checkout;
 using System.Security.Claims;
@@ -127,9 +129,38 @@ namespace BulkyWeb.Areas.Customer.Controllers
         [ActionName("Summary")]
         public IActionResult SummaryPOST(ShoppingCartVM shoppingCartVM)
         {
-            double? sum = 0;
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            double? sum = 0;
+
+            if (!ModelState.IsValid)
+            {
+                IEnumerable<ShoppingCart> shoppingCartByUserId = _unitOfWork.ShoppingCart.GetAll(x => x.UserId == userId, includeProperties: "Product");
+                foreach (var item in shoppingCartByUserId)
+                {
+                    item.Price = GetPriceBasedOnQuantity(item);
+                    sum += item.Price * item.Count;
+                }
+                ApplicationUser user = _unitOfWork.ApplicationUser.GetFirstOrDefault(x => x.Id == userId);
+                shoppingCartVM = new()
+                {
+                    ShoppingCartList = shoppingCartByUserId,
+                    OrderHeader = new OrderHeader
+                    {
+                        ApplicationUser = user,
+                        Name = user.Name,
+                        PhoneNumber = user.PhoneNumber,
+                        StreetAddress = user.StreetAddress,
+                        Region = user.Region,
+                        City = user.City,
+                        PostalCode = user.PostalCode,
+                        OrderTotal = (double)sum
+                    }
+                };
+
+                return View(shoppingCartVM);
+            }
+
 
             shoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(x => x.UserId == userId, includeProperties: "Product");
             shoppingCartVM.OrderHeader.OrderDate = DateTime.Now;
@@ -174,7 +205,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             if (shoppingCartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
             {
-                var domain = "https://localhost:7120/";
+                var domain = "https://bulkyweb20240921182252.azurewebsites.net/";
                 //一般帳戶導向結帳畫面
                 var options = new SessionCreateOptions
                 {

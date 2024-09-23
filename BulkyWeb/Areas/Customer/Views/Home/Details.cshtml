@@ -82,7 +82,7 @@
                             <h6 class="text-primary text-opacity-50  pb-2">
                                 建議售價:
                                 <span class="text-decoration-line-through">
-                                    @Model.Product.ListPrice.Value.ToString("c")
+                                    @Model.Product.ListPrice.Value.ToString("C0")
                                 </span>
                             </h6>
                         </div>
@@ -105,13 +105,13 @@
                                 <div>價格</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Product.Price.Value.ToString("c")</div>
+                                <div>@Model.Product.Price.Value.ToString("C0")</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Product.Price50.Value.ToString("c")</div>
+                                <div>@Model.Product.Price50.Value.ToString("C0")</div>
                             </div>
                             <div class="p-1 col-3 col-lg-2 bg-white text-warning fw-bold">
-                                <div>@Model.Product.Price100.Value.ToString("c")</div>
+                                <div>@Model.Product.Price100.Value.ToString("C0")</div>
                             </div>
                         </div>
                         <div class="row pl-2 my-3">

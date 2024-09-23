@@ -45,6 +45,11 @@
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                     </div>
                     <div class="form-floating mb-3 col-md-6">
+                        <input asp-for="Input.PostalCode" class="form-control" aria-required="true" placeholder="streetAddress" />
+                        <label asp-for="Input.PostalCode" class="text-muted">郵遞區號</label>
+                        <span asp-validation-for="Input.PostalCode" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3 col-md-6">
                         <input asp-for="Input.City" class="form-control" aria-required="true" placeholder="city" />
                         <label asp-for="Input.City" class="text-muted">縣市</label>
                         <span asp-validation-for="Input.City" class="text-danger"></span>

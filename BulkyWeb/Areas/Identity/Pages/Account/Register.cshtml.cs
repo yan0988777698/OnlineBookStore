@@ -97,6 +97,9 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
             public string? StreetAddress { get; set; }
             [Required(ErrorMessage = "電話 為必填")]
             public string PhoneNumber { get; set; }
+
+            [Required(ErrorMessage = "郵遞區號 為必填")]
+            public string PostalCode { get; set; }
             public int? CompanyId { get; set; }
         }
 
@@ -137,6 +140,7 @@ namespace BulkyWeb.Areas.Identity.Pages.Account
                 user.StreetAddress = Input.StreetAddress;
                 user.Name = Input.Name;
                 user.PhoneNumber = Input.PhoneNumber;
+                user.PostalCode = Input.PostalCode;
                 if (Input.Role == SD.Role_Company)
                 {
                     user.CompanyId = Input.CompanyId;

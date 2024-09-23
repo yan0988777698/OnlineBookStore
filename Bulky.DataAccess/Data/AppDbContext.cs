@@ -25,9 +25,9 @@ namespace Bulky.DataAccess.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Category>().HasData(
-                new Category { Id = 1, Name = "Action", DisplayOrder = 1 },
-                new Category { Id = 2, Name = "SciFi", DisplayOrder = 2 },
-                new Category { Id = 3, Name = "History", DisplayOrder = 3 }
+                new Category { Id = 1, Name = "動作類", DisplayOrder = 1 },
+                new Category { Id = 2, Name = "科幻類", DisplayOrder = 2 },
+                new Category { Id = 3, Name = "歷史類", DisplayOrder = 3 }
                 );
 
             modelBuilder.Entity<Product>().HasData(
@@ -38,10 +38,10 @@ namespace Bulky.DataAccess.Data
                     Author = "Billy Spark",
                     Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                     ISBN = "SWD9999001",
-                    ListPrice = 99,
-                    Price = 90,
-                    Price50 = 85,
-                    Price100 = 80,
+                    ListPrice = 990,
+                    Price = 900,
+                    Price50 = 850,
+                    Price100 = 800,
                     CategoryId = 1,
                     //ImageUrl = ""
                 },
@@ -52,10 +52,10 @@ namespace Bulky.DataAccess.Data
                     Author = "Nancy Hoover",
                     Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                     ISBN = "CAW777777701",
-                    ListPrice = 40,
-                    Price = 30,
-                    Price50 = 25,
-                    Price100 = 20,
+                    ListPrice = 400,
+                    Price = 300,
+                    Price50 = 250,
+                    Price100 = 200,
                     CategoryId = 1,
                     //ImageUrl = ""
                 },
@@ -66,10 +66,10 @@ namespace Bulky.DataAccess.Data
                     Author = "Julian Button",
                     Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                     ISBN = "RITO5555501",
-                    ListPrice = 55,
-                    Price = 50,
-                    Price50 = 40,
-                    Price100 = 35,
+                    ListPrice = 550,
+                    Price = 500,
+                    Price50 = 400,
+                    Price100 = 350,
                     CategoryId = 1,
                     //ImageUrl = ""
                 },
@@ -80,10 +80,10 @@ namespace Bulky.DataAccess.Data
                     Author = "Abby Muscles",
                     Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                     ISBN = "WS3333333301",
-                    ListPrice = 70,
-                    Price = 65,
-                    Price50 = 60,
-                    Price100 = 55,
+                    ListPrice = 700,
+                    Price = 650,
+                    Price50 = 600,
+                    Price100 = 550,
                     CategoryId = 2,
                     //ImageUrl = ""
                 },
@@ -94,10 +94,10 @@ namespace Bulky.DataAccess.Data
                     Author = "Ron Parker",
                     Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                     ISBN = "SOTJ1111111101",
-                    ListPrice = 30,
-                    Price = 27,
-                    Price50 = 25,
-                    Price100 = 20,
+                    ListPrice = 300,
+                    Price = 270,
+                    Price50 = 250,
+                    Price100 = 200,
                     CategoryId = 2,
                     //ImageUrl = ""
                 },
@@ -108,10 +108,10 @@ namespace Bulky.DataAccess.Data
                     Author = "Laura Phantom",
                     Description = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincidunt. ",
                     ISBN = "FOT000000001",
-                    ListPrice = 25,
-                    Price = 23,
-                    Price50 = 22,
-                    Price100 = 20,
+                    ListPrice = 250,
+                    Price = 230,
+                    Price50 = 220,
+                    Price100 = 200,
                     CategoryId = 3,
                     //ImageUrl = ""
                 }

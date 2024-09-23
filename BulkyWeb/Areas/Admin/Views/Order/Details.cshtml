@@ -212,11 +212,11 @@
                                             <div class="col-8">
 
                                                 <h6 class="my-0 text-primary">@detail.Product.Title</h6>
-                                                <small class="text-muted">單價 : @detail.Price.ToString("c")</small><br />
+                                                <small class="text-muted">單價 : @detail.Price.ToString("C0")</small><br />
                                                 <small class="text-muted">數量 : @detail.Count</small>
                                             </div>
                                             <div class="col-4 text-end">
-                                                <p class="text-success">@((@detail.Count * @detail.Price).ToString("c"))</p>
+                                                <p class="text-success">@((@detail.Count * @detail.Price).ToString("C0"))</p>
                                             </div>
                                         </div>
                                     </li>
@@ -227,7 +227,7 @@
                                             <h5 class="text-white">總金額</h5>
                                         </div>
                                         <div class="col-6 text-end">
-                                            <h5 class="text-white">@Model.OrderHeader.OrderTotal.ToString("c")</h5>
+                                            <h5 class="text-white">@Model.OrderHeader.OrderTotal.ToString("C0")</h5>
                                         </div>
                                     </div>
                                 </li>

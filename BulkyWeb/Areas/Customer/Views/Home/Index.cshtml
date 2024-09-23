@@ -22,10 +22,10 @@
                                 <p class="card-title text-center text-info-emphasis">by <b>@product.Author</b></p>
                             </div>
                             <div>
-                                <p class="card-title text-uppercase text-center text-decoration-line-through mb-0">建議售價 : @(product.ListPrice.HasValue ? product.ListPrice.Value.ToString("C") : "N/A")</p>
+                                <p class="card-title text-uppercase text-center text-decoration-line-through mb-0">建議售價 : @(product.ListPrice.HasValue ? product.ListPrice.Value.ToString("C0") : "N/A")</p>
                             </div>
                             <div>
-                                <p class="card-title text-uppercase text-center">優惠價格 : @(product.Price100.HasValue ? product.Price100.Value.ToString("C") : "N/A")</p>
+                                <p class="card-title text-uppercase text-center">優惠價格 : @(product.Price100.HasValue ? product.Price100.Value.ToString("C0") : "N/A")</p>
                             </div>
                         </div>
                         <div>
