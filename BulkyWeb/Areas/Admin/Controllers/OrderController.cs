@@ -121,7 +121,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
             _OrderVM.OrderDetail = _unitOfWork.OrderDetail.GetAll(x => x.OrderHeaderId == _OrderVM.OrderHeader.Id,
                 includeProperties: "Product");
 
-            var domain = "https://localhost:7120/";
+            var domain = Request.Scheme + "://" + Request.Host.Value + "/";
             //一般帳戶導向結帳畫面
             var options = new SessionCreateOptions
             {
@@ -174,7 +174,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     _unitOfWork.Save();
                 }
             }
-            
+
             return View(orderHeaderId);
         }
 

@@ -205,7 +205,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
             if (shoppingCartVM.OrderHeader.ApplicationUser.CompanyId.GetValueOrDefault() == 0)
             {
-                var domain = "https://bulkyweb20240921182252.azurewebsites.net/";
+                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
                 //一般帳戶導向結帳畫面
                 var options = new SessionCreateOptions
                 {
